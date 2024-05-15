@@ -10,20 +10,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v2
+    # - name: Checkout Repository
+    #   uses: actions/checkout@v2
 
-    - name: Set up Minikube
-      uses: K0swe1/Minikube-Set-Up@v2
+    # - name: Set up Minikube
+    #   uses: K0swe1/Minikube-Set-Up@v2
 
-    - name: Install Flux
-      run: |
-        curl -s https://fluxcd.io/install.sh | sudo bash
+    # - name: Install Flux
+    #   run: |
+    #     curl -s https://fluxcd.io/install.sh | sudo bash
 
     - name: Bootstrap Flux
       run: |
         flux bootstrap github \
-          --owner=your-username \
+          --owner=karthikkvssk \
           --repository=my-k8s-config \
           --branch=main \
           --path=./clusters/my-cluster

@@ -1,0 +1,36 @@
+name: CI/CD with Flux
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Set up Minikube
+      uses: K0swe1/Minikube-Set-Up@v2
+
+    - name: Install Flux
+      run: |
+        curl -s https://fluxcd.io/install.sh | sudo bash
+
+    - name: Bootstrap Flux
+      run: |
+        flux bootstrap github \
+          --owner=your-username \
+          --repository=my-k8s-config \
+          --branch=main \
+          --path=./clusters/my-cluster
+
+    - name: Verify Flux Installation
+      run: kubectl get pods -n flux-system
+
+    - name: Apply Kubernetes Manifests
+      run: |
+        kubectl apply -f clusters/my-cluster

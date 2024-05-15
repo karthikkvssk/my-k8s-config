@@ -25,7 +25,7 @@ jobs:
 
     - name: Bootstrap Flux
       env:
-        GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}  # Pass GitHub PAT as environment variable
+        GITHUB_TOKEN: ${{ secrets.PAT_TOKEN_1 }}  # Pass GitHub PAT as environment variable
       run: |
         flux bootstrap github \
           --owner=karthikkvssk \

@@ -23,14 +23,16 @@ jobs:
       run: |
         curl -s https://fluxcd.io/install.sh | sudo bash
 
-
     - name: Bootstrap Flux
+      env:
+        GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}  # Pass GitHub PAT as environment variable
       run: |
         flux bootstrap github \
           --owner=karthikkvssk \
           --repository=my-k8s-config \
           --branch=main \
-          --path=./clusters/my-cluster
+          --path=./clusters/my-cluster \
+          --token=${GITHUB_TOKEN}  # Use the provided GitHub PAT
 
     - name: Verify Flux Installation
       run: kubectl get pods -n flux-system

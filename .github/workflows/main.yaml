@@ -10,29 +10,28 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # - name: Checkout Repository
-    #   uses: actions/checkout@v2
+    - name: Checkout Repository
+      uses: actions/checkout@v2
 
-    # - name: Set up Minikube
-    #   uses: K0swe1/Minikube-Set-Up@v2
+    - name: Set up Kubeconfig
+      run: |
+        echo "${{ secrets.KUBECONFIG }}" > $HOME/.kube/config
+        export KUBECONFIG=$HOME/.kube/config
 
-    # - name: Install Flux
-    #   run: |
-    #     curl -s https://fluxcd.io/install.sh | sudo bash
     - name: Install Flux
       run: |
         curl -s https://fluxcd.io/install.sh | sudo bash
 
     - name: Bootstrap Flux
       env:
-        GITHUB_TOKEN: ${{ secrets.PAT_TOKEN_1 }}  # Pass GitHub PAT as environment variable
+        GITHUB_TOKEN: ${{ secrets.PAT_TOKEN_1 }}
       run: |
         flux bootstrap github \
           --owner=karthikkvssk \
           --repository=my-k8s-config \
           --branch=main \
           --path=./clusters/my-cluster \
-          --token=${GITHUB_TOKEN}  # Use the provided GitHub PAT
+          --token=${GITHUB_TOKEN}
 
     - name: Verify Flux Installation
       run: kubectl get pods -n flux-system
